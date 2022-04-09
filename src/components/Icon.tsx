@@ -1,7 +1,8 @@
 import React from "react";
+import { GenreName } from '../@types/genre';
 
 interface IconProps {
-  name: 'action' | 'comedy' | 'documentary' | 'drama' | 'horror' | 'family';
+  name: GenreName;
   color: string;
 }
 
