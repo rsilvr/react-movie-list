@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { Button } from './components/Button';
-import { MovieCard } from './components/MovieCard';
+import { GenreName } from './@types/genre';
 
-// import { SideBar } from './components/SideBar';
+import { MovieCard } from './components/MovieCard';
+import { SideBar } from './components/SideBar';
 // import { Content } from './components/Content';
 
 import { api } from './services/api';
@@ -15,7 +15,7 @@ import './styles/content.scss';
 
 interface GenreResponseProps {
   id: number;
-  name: 'action' | 'comedy' | 'documentary' | 'drama' | 'horror' | 'family';
+  name: GenreName;
   title: string;
 }
 
@@ -60,23 +60,7 @@ export function App() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <nav className="sidebar">
-        <span>Watch<p>Me</p></span>
-
-        <div className="buttons-container">
-          {genres.map(genre => (
-            <Button
-              key={String(genre.id)}
-              title={genre.title}
-              iconName={genre.name}
-              onClick={() => handleClickButton(genre.id)}
-              selected={selectedGenreId === genre.id}
-            />
-          ))}
-        </div>
-
-      </nav>
-
+      <SideBar genres={genres} selectedGenreId={selectedGenreId} onSelectedGenre={handleClickButton} />
       <div className="container">
         <header>
           <span className="category">Categoria:<span> {selectedGenre.title}</span></span>
