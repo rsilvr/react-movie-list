@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 
 import { GenreName } from './@types/genre';
 
-import { MovieCard } from './components/MovieCard';
 import { SideBar } from './components/SideBar';
-// import { Content } from './components/Content';
+import { Content } from './components/Content';
 
 import { api } from './services/api';
 
@@ -12,6 +11,7 @@ import './styles/global.scss';
 
 import './styles/sidebar.scss';
 import './styles/content.scss';
+import { Movie } from './@types/movie';
 
 interface GenreResponseProps {
   id: number;
@@ -58,22 +58,20 @@ export function App() {
     setSelectedGenreId(id);
   }
 
+  function assembleMovies(movieItems: MovieProps[]): Movie[] {
+    return movieItems.map<Movie>(item => ({
+      id: item.imdbID,
+      title: item.Title,
+      poster: item.Poster,
+      rating: item.Ratings[0].Value,
+      runtime: item.Runtime
+    }))
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <SideBar genres={genres} selectedGenreId={selectedGenreId} onSelectedGenre={handleClickButton} />
-      <div className="container">
-        <header>
-          <span className="category">Categoria:<span> {selectedGenre.title}</span></span>
-        </header>
-
-        <main>
-          <div className="movies-list">
-            {movies.map(movie => (
-              <MovieCard key ={movie.imdbID} title={movie.Title} poster={movie.Poster} runtime={movie.Runtime} rating={movie.Ratings[0].Value} />
-            ))}
-          </div>
-        </main>
-      </div>
+      <Content genreTitle={selectedGenre.name} movies={assembleMovies(movies)} />
     </div>
   )
 }
